@@ -110,17 +110,6 @@ export default function AccDetailsTable() {
               <Eye color="#1B70A6" size={22} />
             </button>
           </Tooltip>
-          <Tooltip title="Block User">
-            <CustomConfirm
-              title="Block User"
-              description="Are you sure to block this user?"
-              onConfirm={handleBlockUser}
-            >
-              <button>
-                <UserX color="#F16365" size={22} />
-              </button>
-            </CustomConfirm>
-          </Tooltip>
         </div>
       ),
     },
