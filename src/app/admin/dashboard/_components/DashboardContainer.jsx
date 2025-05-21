@@ -68,7 +68,7 @@ export default function DashboardContainer() {
                       ) : (
                         <span>
                           ₦
-                           <CustomCountUp end={stat.count} />
+                          <CustomCountUp end={stat.count} />
                         </span>
                       )}
                     </h5>

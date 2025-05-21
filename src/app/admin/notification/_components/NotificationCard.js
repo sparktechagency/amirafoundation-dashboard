@@ -22,11 +22,13 @@ export default function NotificationCard({ notification }) {
         notification?.read ? 'border border-[#A57EA5] bg-white' : 'bg-[#A57EA5] text-white'
       } `}
     >
-      <Bell size={32} />
+      <div className="flex items-center gap-x-5">
+        <Bell size={32} />
 
-      <div>
-        <p className="text-[22px] text-xl font-semibold">{notification?.message}</p>
-        <p className="text-md"> {notification?.description}</p>
+        <div>
+          <p className="text-[22px] text-xl font-semibold">{notification?.message}</p>
+          <p className="text-md"> {notification?.description}</p>
+        </div>
       </div>
 
       <div className="flex gap-5">

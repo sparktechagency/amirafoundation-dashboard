@@ -31,11 +31,13 @@ const ProductCard = ({ product }) => {
   return (
     <div className="rounded-xl border bg-white px-[25px] pt-8 shadow-md">
       <div className="mb-2 space-y-1">
-        <h1 className="text-3xl font-bold">Total Product</h1>
-        <h1 className="text-3xl font-semibold">
-          <CustomCountUp end={product?.data?.products?.totalProduct} />
-        </h1>
-        <p>Avarage Order: {product?.data?.products?.avgOrder}</p>
+        <div className="flex items-center gap-10">
+          <h1 className="text-3xl font-bold">Total Product</h1>
+          <span className="text-3xl font-semibold">
+            <CustomCountUp end={product?.data?.products?.totalProduct} />
+          </span>
+        </div>
+        <p>Avarage Order: ₦ {product?.data?.products?.avgOrder} / this month</p>
 
         <h1 className="text-lg font-bold text-red-500">Low Stock Alert</h1>
       </div>

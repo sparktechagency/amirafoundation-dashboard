@@ -15,7 +15,7 @@ export default function OrderTable() {
   const [details, setDetails] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [profileModalOpen, setProfileModalOpen] = useState(false);
-  const [paginationLoading, setPaginationLoading] = useState(false); // New state for pagination loading
+  const [paginationLoading, setPaginationLoading] = useState(false);
 
   // Order API handlers
   const {
@@ -62,7 +62,8 @@ export default function OrderTable() {
       key: inx + 1,
       order_id: item?.id,
       order_date: moment(item?.createdAt).format('DD-MM-YYYY'),
-      customer_name: item?.user?.name,
+      customer_name: item?.user?.name || 'No name',
+      customer_email: item?.user?.email || 'No email',
       amount: item?.amount,
       product_name:
         item?.items?.map((productItem) => productItem?.product?.name).join(', ') || 'No products',
