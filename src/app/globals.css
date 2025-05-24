@@ -4,12 +4,12 @@
 
 /* Custom Fonts */
 @font-face {
-  font-family: "General Sans";
-  src: url("../assets/fonts/GeneralSans-Variable.woff2");
+  font-family: 'General Sans';
+  src: url('../assets/fonts/GeneralSans-Variable.woff2');
 }
 
 :root {
-  --font-general-sans: "General Sans", sans-serif;
+  --font-general-sans: 'General Sans', sans-serif;
 
   /* Custom Colors */
   --accent-green: #3bb5a5;

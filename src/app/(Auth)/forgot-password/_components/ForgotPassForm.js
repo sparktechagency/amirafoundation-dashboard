@@ -1,18 +1,37 @@
-"use client";
-import Link from "next/link";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { forgotPassSchema } from "@/schema/authSchema";
-import FormWrapper from "@/components/Form/FormWrapper";
-import UInput from "@/components/Form/UInput";
-import { Button } from "antd";
-import { ArrowLeft } from "lucide-react";
-import { useRouter } from "next/navigation";
+'use client';
+import Link from 'next/link';
+import FormWrapper from '@/components/Form/FormWrapper';
+import UInput from '@/components/Form/UInput';
+import { Button } from 'antd';
+import { ArrowLeft } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useForgetPasswordMutation } from '@/redux/api/authApi';
+import { toast } from 'sonner';
 
 export default function ForgotPassForm() {
   const router = useRouter();
-  const onSubmit = (data) => {
-    console.log(data);
-    router.push("/otp-verification");
+
+  const [forgetPassword, { isLoading }] = useForgetPasswordMutation();
+
+  const onSubmit = async (data) => {
+    try {
+      const res = await forgetPassword(data).unwrap();
+      if (res?.success) {
+        toast.success(res?.message);
+
+        localStorage.setItem('forgetPasswordToken', res?.data?.token);
+
+        router.push('/otp-verification');
+      }
+    } catch (error) {
+      if (error?.data?.message) {
+        toast.error(error?.data?.message);
+      } else {
+        toast.error('Something went wrong');
+      }
+    }
+
+    router.push('/otp-verification');
   };
 
   return (
@@ -46,6 +65,8 @@ export default function ForgotPassForm() {
           htmlType="submit"
           size="large"
           className="w-full !font-semibold !h-10"
+          loading={isLoading}
+          disabled={isLoading}
         >
           Submit
         </Button>

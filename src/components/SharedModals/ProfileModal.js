@@ -1,21 +1,18 @@
-"use client";
+'use client';
 
-import { Modal } from "antd";
-import Image from "next/image";
-import { Tag } from "antd";
+import { Modal } from 'antd';
+import Image from 'next/image';
+import { Tag } from 'antd';
 
 export default function ProfileModal({ open, setOpen, user }) {
-
   const isValidUrl = (url) => {
-            if (!url) return false;
-            return url.startsWith("http://") || url.startsWith("https://") || url.startsWith("/");
-          };
-  
-          // Determine the image source
-          const imageSrc = isValidUrl(user?.userImg);
-  
+    if (!url) return false;
+    return url.startsWith('http://') || url.startsWith('https://') || url.startsWith('/');
+  };
 
- 
+  // Determine the image source
+  const imageSrc = isValidUrl(user?.userImg);
+
   return (
     <Modal
       centered

@@ -17,9 +17,9 @@ const baseQuery = fetchBaseQuery({
     if (guestToken) {
       headers.set('token', guestToken);
     }
-    const forgetPasswordToken = localStorage.getItem('signupToken');
+    const forgetPasswordToken = localStorage.getItem('forgetPasswordToken');
     if (forgetPasswordToken) {
-      headers.set('token', forgetPasswordToken);
+      headers.set('Authorization', forgetPasswordToken);
     }
 
     return headers;
