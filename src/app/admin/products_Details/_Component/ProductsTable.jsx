@@ -8,7 +8,6 @@ import { Eye } from 'lucide-react';
 import { useState } from 'react';
 import Image from 'next/image';
 import CustomConfirm from '@/components/CustomConfirm/CustomConfirm';
-import { message } from 'antd';
 import { Tag } from 'antd';
 import AddproductModal from '@/components/SharedModals/AddproductModal';
 import EditProductModal from '@/components/SharedModals/EditProductModal';

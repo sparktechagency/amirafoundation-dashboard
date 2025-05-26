@@ -16,7 +16,7 @@ export default function EarningsTable() {
   const [showEarningModal, setShowEarningModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedUser, SetSelecteduser] = useState('');
-  const { data, isLoading, isError } = useGetAllEarningsQuery({ currentPage });
+  const { data, isLoading } = useGetAllEarningsQuery({ currentPage });
 
   // stats data
   const earningStats = [

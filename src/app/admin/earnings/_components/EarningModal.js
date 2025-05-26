@@ -1,9 +1,6 @@
-"use client";
+'use client';
 
-import { Divider, Modal } from "antd";
-import Image from "next/image";
-import userImage from "@/assets/images/user-avatar-lg.png";
-import { Tag } from "antd";
+import { Divider, Modal } from 'antd';
 
 export default function EarningModal({ open, setOpen, earning }) {
   return (

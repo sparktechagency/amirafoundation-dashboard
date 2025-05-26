@@ -12,30 +12,37 @@ import { useDispatch } from 'react-redux';
 import { toast } from 'sonner';
 import CustomLoader from '@/component/Shared/CustomLoader';
 import { setUser } from '@/redux/features/authSlice';
+import { jwtDecode } from 'jwt-decode';
 
 export default function LoginForm() {
   const router = useRouter();
   const dispatch = useDispatch();
-  // Login api handlers
-  const [signin, { isLoading, error }] = useSignInMutation();
+  const [signin, { isLoading }] = useSignInMutation();
 
   const onLoginSubmit = async (data) => {
     try {
       const res = await signin(data).unwrap();
-      // console.log("API Response:", res.data?.accessToken);
-      if (res.success) {
+
+      if (res?.data?.accessToken) {
+        const decodedToken = jwtDecode(res.data.accessToken);
+        const userRole = decodedToken?.role;
+        if (userRole !== 'admin') {
+          toast.error('You are not authorized to access this site');
+          return;
+        }
+        // On successful login and role check
         toast.success('Login successful');
-        // localStorage.setItem("refreshToken", res?.data?.refreshToken);
-        // Set user info into store
         dispatch(
           setUser({
-            token: res.data?.accessToken,
+            token: res.data.accessToken,
           })
         );
         router.push('/admin/dashboard');
+      } else {
+        toast.error(res?.message || 'Login failed: No access token received');
       }
     } catch (error) {
-      toast.error(error?.data?.message);
+      toast.error(error?.data?.message || 'Failed to login');
     }
   };
 
@@ -70,8 +77,11 @@ export default function LoginForm() {
           type="primary"
           size="large"
           className="w-full !font-semibold !h-10"
+          disabled={isLoading}
+          loading={isLoading}
+          icon={isLoading ? <CustomLoader className="w-5 h-5" /> : null}
         >
-          {isLoading ? <CustomLoader /> : 'Log In'}
+          Login
         </Button>
 
         <Link

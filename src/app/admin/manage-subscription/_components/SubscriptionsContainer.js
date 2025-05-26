@@ -12,7 +12,7 @@ export default function SubscriptionsContainer() {
   const [showCreatePlanModal, setShowCreatePlanModal] = useState(false);
   const [showEditPlanModal, setShowEditPlanModal] = useState(false);
   const [pakageData, SetData] = useState('');
-  const { data, isLoading, isError } = useGetAllSubCriptionQuery();
+  const { data } = useGetAllSubCriptionQuery();
   const subscriptionPlans = data?.data;
 
   //

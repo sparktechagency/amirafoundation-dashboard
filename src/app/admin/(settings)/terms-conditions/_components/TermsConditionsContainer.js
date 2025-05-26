@@ -1,34 +1,31 @@
-"use client";
+'use client';
 
-import FormWrapper from "@/components/Form/FormWrapper";
-import UTextEditor from "@/components/Form/UTextEditor";
-import { useGetContentsQuery, useUpdateContentMutation } from "@/redux/api/contentApi";
-import { Button } from "antd";
-import { Edit } from "lucide-react";
-import { toast } from "sonner";
+import FormWrapper from '@/components/Form/FormWrapper';
+import UTextEditor from '@/components/Form/UTextEditor';
+import { useGetContentsQuery, useUpdateContentMutation } from '@/redux/api/contentApi';
+import { Button } from 'antd';
+import { Edit } from 'lucide-react';
+import { toast } from 'sonner';
 
 export default function TermsConditionsContainer() {
-
   // get content api handaller
-  const {data,isLoading}=useGetContentsQuery()
-  const value = data?.data?.[0]?.termsAndConditions
+  const { data } = useGetContentsQuery();
+  const value = data?.data?.[0]?.termsAndConditions;
 
   // update contetnt api handeller
 
-  const [updateContent,{isLoading:updating}]=useUpdateContentMutation()
+  const [updateContent, { isLoading: updating }] = useUpdateContentMutation();
 
-
-const handleSubmit= async(values)=>{
-try {
-  const res = await updateContent(values).unwrap()
-  if(res.success){
-    toast.success("Content Update Successfully")
-  }
-} catch (error) {
-  toast.error(error?.data?.message)
-  
-}
-  }
+  const handleSubmit = async (values) => {
+    try {
+      const res = await updateContent(values).unwrap();
+      if (res.success) {
+        toast.success('Content Update Successfully');
+      }
+    } catch (error) {
+      toast.error(error?.data?.message);
+    }
+  };
   return (
     <section>
       <h3 className="text-2xl font-semibold mb-6">Terms and Conditions</h3>

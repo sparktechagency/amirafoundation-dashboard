@@ -44,7 +44,7 @@ export default function ProfileContainer() {
         <section className="flex-center gap-x-3">
           <div className="relative w-max">
             <Image
-              src={selectedImage ? URL.createObjectURL(selectedImage) : user?.photoUrl || ''}
+              src={selectedImage ? URL.createObjectURL(selectedImage) : user?.photoUrl}
               alt="Admin avatar"
               width={1200}
               height={1200}

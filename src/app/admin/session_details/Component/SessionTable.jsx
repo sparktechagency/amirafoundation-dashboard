@@ -48,7 +48,6 @@ export default function SessionTable() {
   const tabledata = data?.data?.map((item, inx) => ({
     key: inx + 1,
     name: item?.title,
-    status: item?.status,
     therapist: item?.therapist?.user?.name,
     fee: item?.fee,
     thumbnail: item?.thumbnail,

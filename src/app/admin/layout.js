@@ -40,7 +40,8 @@ export default function AdminLayout({ children }) {
       userId = decodedToken._id;
       // console.log('User ID:', userId);
     } catch (error) {
-      console.error('Error decoding token:', error);
+      // console.error('Error decoding token:', error);
+      toast.error(error?.data?.message || 'Failed to decode token');
     }
   }
 

@@ -1,9 +1,8 @@
 import CustomConfirm from '@/components/CustomConfirm/CustomConfirm';
 import { useDeleteSubCriptionMutation } from '@/redux/api/subsCriptionApi';
-import { Badge, Button } from 'antd';
+import { Button } from 'antd';
 import { Trash2 } from 'lucide-react';
 import { Edit } from 'lucide-react';
-import { useState } from 'react';
 import { toast } from 'sonner';
 
 export default function SubscriptionPlanCard({ data, setShowEditPlanModal, SetData }) {

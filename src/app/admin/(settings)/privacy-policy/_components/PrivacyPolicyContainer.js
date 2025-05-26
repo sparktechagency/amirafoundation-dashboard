@@ -8,7 +8,7 @@ import { Edit } from 'lucide-react';
 import { toast } from 'sonner';
 
 export default function PrivacyPolicyContainer() {
-  const { data, isLoading } = useGetContentsQuery();
+  const { data } = useGetContentsQuery();
   const value = data?.data?.[0]?.privacyPolicy;
   // update contetnt api handeller
 

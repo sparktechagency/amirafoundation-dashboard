@@ -22,7 +22,6 @@ export default function OrderTable() {
     data: order,
     isLoading,
     isFetching,
-    isError,
   } = useGetAllOrdersQuery(
     { limit: 10, page: currentPage, searchText },
     { refetchOnMountOrArgChange: true }
@@ -39,7 +38,7 @@ export default function OrderTable() {
       await updateOrderStatus({ orderId, status: newStatus }).unwrap();
       toast.success(`Order status updated to ${newStatus} successfully`);
     } catch (error) {
-      toast.error('Failed to update order status');
+      toast.error(`Failed to update order status: ${error?.data?.message || error.message}`);
     }
   };
 

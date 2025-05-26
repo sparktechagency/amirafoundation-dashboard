@@ -4,7 +4,6 @@ import { AntdRegistry } from '@ant-design/nextjs-registry';
 import { ConfigProvider } from 'antd';
 import { mainTheme } from '../theme/mainTheme';
 import NextTopLoader from 'nextjs-toploader';
-import ReduxProviders from '@/redux/lib/ReduxProvider';
 import { Toaster } from 'react-hot-toast';
 
 export default function Providers({ children }) {

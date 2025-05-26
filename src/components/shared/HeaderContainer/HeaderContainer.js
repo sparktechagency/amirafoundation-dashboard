@@ -20,7 +20,7 @@ const { Header } = Layout;
 export default function HeaderContainer({ collapsed, setCollapsed }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { data, isError, isLoading, isSuccess } = useGetMyProfileQuery();
+  const { data } = useGetMyProfileQuery();
   const user = data?.data;
 
   // notification-------------------

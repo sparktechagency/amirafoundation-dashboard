@@ -1,15 +1,12 @@
 'use client';
 
-import { Input, Table } from 'antd';
+import { Table } from 'antd';
 import { Tooltip } from 'antd';
 import { ConfigProvider } from 'antd';
-import { ChevronLeft, ChevronRight, Search, User } from 'lucide-react';
 import { Eye } from 'lucide-react';
-import { UserX } from 'lucide-react';
 import { useState } from 'react';
 import Image from 'next/image';
-import CustomConfirm from '@/components/CustomConfirm/CustomConfirm';
-import { message } from 'antd';
+
 import ProfileModal from '@/components/SharedModals/ProfileModal';
 import { Tag } from 'antd';
 import { useGetAllusersQuery } from '@/redux/api/userApi';
@@ -22,11 +19,14 @@ export default function AccDetailsTable() {
   const [selectedUser, SetSelecteduser] = useState('');
 
   // User data with query parameterss
-  const { data, isError, isLoading } = useGetAllusersQuery({
+  const { data, isLoading } = useGetAllusersQuery({
     limit: 5,
     page: currentPage,
     searchText,
   });
+
+  console.log(setCurrentPage);
+  console.log(setSearchText);
 
   // Table Data transformation
   const tabledata =
@@ -39,11 +39,6 @@ export default function AccDetailsTable() {
       date: moment(item?.createdAt).format('DD-MM-YYYY'),
       status: item?.status,
     })) || [];
-
-  // Block user handler
-  const handleBlockUser = () => {
-    message.success('User blocked successfully');
-  };
 
   // Table Columns (unchanged)
   const columns = [

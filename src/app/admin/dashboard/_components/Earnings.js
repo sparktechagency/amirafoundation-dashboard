@@ -1,6 +1,6 @@
 'use client';
 
-import { DatePicker, Select } from 'antd';
+import { DatePicker } from 'antd';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useState } from 'react';
 import moment from 'moment';
@@ -9,6 +9,7 @@ const EarningSummary = ({ earnigData, onYearChange }) => {
   const [selectedYear, setSelectedYear] = useState(null);
 
   const data = earnigData?.data?.earningOverview?.map((item, inx) => ({
+    key: inx + 1,
     month: item?.month,
     user: item?.amount,
   }));

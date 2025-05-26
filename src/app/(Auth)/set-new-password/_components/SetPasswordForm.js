@@ -1,6 +1,5 @@
 'use client';
 
-import { LogoSvg } from '@/assets/logos/LogoSvg';
 import FormWrapper from '@/components/Form/FormWrapper';
 import UInput from '@/components/Form/UInput';
 import { useResetPasswordMutation } from '@/redux/api/authApi';

@@ -6,11 +6,11 @@ import CustomCountUp from '@/components/CustomCountUp/CustomCountUp';
 import EarningSummary from './Earnings';
 import ProductCard from './TotalProduct';
 import { useGetDashboardDataQuery } from '@/redux/api/dashboardApi';
-import { FaUsers, FaDollarSign, FaChartBar, FaMoneyBill } from 'react-icons/fa';
+import { FaUsers, FaChartBar, FaMoneyBill } from 'react-icons/fa';
 
 export default function DashboardContainer() {
   const [currentYear, setCurrentYear] = useState(null);
-  const { data, isLoading } = useGetDashboardDataQuery({ currentYear });
+  const { data } = useGetDashboardDataQuery({ currentYear });
 
   const userStats = [
     {
@@ -41,7 +41,6 @@ export default function DashboardContainer() {
 
   const handleYearChange = (year) => {
     setCurrentYear(year);
-    console.log('Selected Year in DashboardContainer:', year);
   };
 
   return (

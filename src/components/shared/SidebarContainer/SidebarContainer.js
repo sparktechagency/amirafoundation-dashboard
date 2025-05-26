@@ -3,7 +3,7 @@
 import './Sidebar.css';
 import logo from '@/assets/images/logo.png';
 import { logout } from '@/redux/features/authSlice';
-import { Divider, Menu } from 'antd';
+import { Menu } from 'antd';
 import Sider from 'antd/es/layout/Sider';
 import { CircleDollarSign, ShoppingCart } from 'lucide-react';
 import { Shapes } from 'lucide-react';

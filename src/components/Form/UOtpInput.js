@@ -1,23 +1,9 @@
-"use client";
+'use client';
 
-import { Form, Input } from "antd";
-import { Controller } from "react-hook-form";
+import { Form, Input } from 'antd';
+import { Controller } from 'react-hook-form';
 
-const UOtpInput = ({
-  type,
-  name,
-  label,
-  size,
-  placeholder,
-  defaultValue,
-  disabled = false,
-  labelStyles = {},
-  className,
-  suffix,
-  style,
-  max,
-  required,
-}) => {
+const UOtpInput = ({ name, label, labelStyles = {}, className, suffix, style, max, required }) => {
   return (
     <Controller
       name={name}
@@ -30,8 +16,8 @@ const UOtpInput = ({
               label
             )
           }
-          validateStatus={error ? "error" : ""}
-          help={error ? error.message : ""}
+          validateStatus={error ? 'error' : ''}
+          help={error ? error.message : ''}
         >
           <Input.OTP size="large" {...field} />
         </Form.Item>

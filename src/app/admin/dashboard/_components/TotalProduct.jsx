@@ -1,10 +1,11 @@
 import React from 'react';
-import { Table, Typography, Tag } from 'antd';
+import { Table, Typography } from 'antd';
 import CustomCountUp from '@/components/CustomCountUp/CustomCountUp';
 const { Text } = Typography;
 
 const ProductCard = ({ product }) => {
   const data = product?.data?.products?.restockProducts?.map((item, inx) => ({
+    key: inx + 1,
     productId: item?.id,
     productName: item?.name,
     stockLevel: item?.quantity,

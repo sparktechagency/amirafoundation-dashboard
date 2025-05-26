@@ -1,15 +1,11 @@
 'use client';
 import NotificationCard from './NotificationCard';
 import { Button, Empty } from 'antd';
-import {
-  useDeleteNotificationMutation,
-  useGetMyNotificationQuery,
-  useMarkAsReadMutation,
-} from '@/redux/api/notificationApi';
+import { useGetMyNotificationQuery, useMarkAsReadMutation } from '@/redux/api/notificationApi';
 import { toast } from 'sonner';
 
 export default function NotificationContainer() {
-  const { data: notificationRes, refetch, isLoading } = useGetMyNotificationQuery({});
+  const { data: notificationRes } = useGetMyNotificationQuery({});
   const notificationData = notificationRes?.data || [];
   const [updateNotification] = useMarkAsReadMutation();
   const handelToRead = async () => {

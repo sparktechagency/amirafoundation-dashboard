@@ -3,18 +3,16 @@
 import { Input, Table } from 'antd';
 import { Tooltip } from 'antd';
 import { ConfigProvider } from 'antd';
-import { ChevronLeft, ChevronRight, Search, User } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Search } from 'lucide-react';
 import { Eye } from 'lucide-react';
 import { UserX } from 'lucide-react';
 import { useState } from 'react';
 import Image from 'next/image';
 import CustomConfirm from '@/components/CustomConfirm/CustomConfirm';
-import { message } from 'antd';
 import ProfileModal from '@/components/SharedModals/ProfileModal';
 import { Tag } from 'antd';
 import { useBlockUnblockUserMutation, useGetAllusersQuery } from '@/redux/api/userApi';
 import moment from 'moment';
-import { record } from 'zod';
 import { toast } from 'sonner';
 
 export default function AccDetailsTable() {
@@ -24,7 +22,7 @@ export default function AccDetailsTable() {
   const [selectedUser, SetSelecteduser] = useState('');
 
   // User data with query parameterss
-  const { data, isError, isLoading } = useGetAllusersQuery({
+  const { data, isLoading } = useGetAllusersQuery({
     limit: 10,
     page: currentPage,
     searchText,

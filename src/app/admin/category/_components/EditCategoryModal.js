@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
-import { Button, Form, Input, Modal, Upload } from "antd";
-import { Plus } from "lucide-react";
-import { UploadOutlined } from "@ant-design/icons";
-import { useUpdateProductcategoryMutation } from "@/redux/api/productCategoryApi";
-import { toast } from "sonner";
+import React, { useEffect } from 'react';
+import { Button, Form, Input, Modal, Upload } from 'antd';
+import { Plus } from 'lucide-react';
+import { useUpdateProductcategoryMutation } from '@/redux/api/productCategoryApi';
+import { toast } from 'sonner';
 
 export default function EditCategoryModal({ open, setOpen, data }) {
   const [form] = Form.useForm();
@@ -17,9 +16,9 @@ export default function EditCategoryModal({ open, setOpen, data }) {
         image: data?.img
           ? [
               {
-                uid: "-1",
-                name: "thumbnail.jpg",
-                status: "done",
+                uid: '-1',
+                name: 'thumbnail.jpg',
+                status: 'done',
                 url: data?.img,
               },
             ]
@@ -38,35 +37,34 @@ export default function EditCategoryModal({ open, setOpen, data }) {
   const handleSubmit = async (values) => {
     try {
       const formData = new FormData();
-      formData.append("data", JSON.stringify(values));
+      formData.append('data', JSON.stringify(values));
 
       // Handle single image
       if (values.image && values.image.length > 0 && values.image[0].originFileObj) {
-        formData.append("image", values.image[0].originFileObj);
+        formData.append('image', values.image[0].originFileObj);
       }
 
       const res = await update({ id: data.id, data: formData }).unwrap();
       if (res.success) {
-        toast.success("Category updated successfully");
+        toast.success('Category updated successfully');
         form.resetFields();
         setOpen(false);
       }
     } catch (error) {
-      console.error("Update error:", error);
-      toast.error(error?.data?.message || "Failed to update category");
+      toast.error(error?.data?.message || 'Failed to update category');
     }
   };
 
   // Image upload validation
   const beforeUpload = (file) => {
-    const isImage = file.type.startsWith("image/");
-    const isLt2M = file.size / 1024 / 1024 < 2; 
+    const isImage = file.type.startsWith('image/');
+    const isLt2M = file.size / 1024 / 1024 < 2;
     if (!isImage) {
-      toast.error("You can only upload image files!");
+      toast.error('You can only upload image files!');
       return false;
     }
     if (!isLt2M) {
-      toast.error("Image must be smaller than 2MB!");
+      toast.error('Image must be smaller than 2MB!');
       return false;
     }
     return true;
@@ -87,7 +85,7 @@ export default function EditCategoryModal({ open, setOpen, data }) {
         form={form}
         layout="vertical"
         style={{
-          marginTop: "40px",
+          marginTop: '40px',
         }}
         onFinish={handleSubmit}
       >
@@ -97,10 +95,10 @@ export default function EditCategoryModal({ open, setOpen, data }) {
           rules={[
             {
               required: true,
-              message: "Please enter category name",
+              message: 'Please enter category name',
             },
           ]}
-          style={{ width: "100%" }}
+          style={{ width: '100%' }}
         >
           <Input size="large" placeholder="Enter category name" />
         </Form.Item>
@@ -114,18 +112,18 @@ export default function EditCategoryModal({ open, setOpen, data }) {
             name="image"
             valuePropName="fileList"
             getValueFromEvent={(e) => (Array.isArray(e) ? e : e && e.fileList)}
-            rules={[{ required: true, message: "Please upload an image" }]}
+            rules={[{ required: true, message: 'Please upload an image' }]}
             style={{
-              textAlign: "center",
-              padding: "20px",
-              borderRadius: "10px",
+              textAlign: 'center',
+              padding: '20px',
+              borderRadius: '10px',
             }}
           >
             <Upload
               name="image"
               listType="picture"
               beforeUpload={beforeUpload}
-              maxCount={1} 
+              maxCount={1}
               accept="image/*"
             >
               <Button type="primary" htmlType="button" icon={<Plus size={20} />}>
