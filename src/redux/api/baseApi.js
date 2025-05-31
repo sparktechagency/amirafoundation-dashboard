@@ -3,7 +3,7 @@ import { logout, setUser } from '../features/authSlice';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
-  credentials: 'include',
+  // credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
     const token = getState()?.auth?.token;
     if (token) {
@@ -33,7 +33,7 @@ const baseQueryWithRefreshToken = async (args, api, extraOptions) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/refresh-token`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: token },
-      credentials: 'include',
+      // credentials: 'include',
     });
 
     const data = await res.json();
