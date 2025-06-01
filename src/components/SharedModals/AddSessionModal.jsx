@@ -33,7 +33,7 @@ const AddSessionModal = ({ open, setOpen }) => {
   const { data } = useGetAllTherapistQuery({ limit: 10, page: 1, searchText });
 
   // add new session api handaler
-  const [addSession, { isLoading, isError }] = useAddNewSessionMutation();
+  const [addSession, { isLoading }] = useAddNewSessionMutation();
 
   const handleSubmit = async (values) => {
     const formValues = { ...values, slots: slots };
@@ -55,6 +55,8 @@ const AddSessionModal = ({ open, setOpen }) => {
     } catch (error) {
       toast.error(error?.data?.message || 'Something went wrong');
     }
+
+    console.log(values);
   };
 
   // Add a time slot for a selected date
@@ -191,7 +193,7 @@ const AddSessionModal = ({ open, setOpen }) => {
                   filterOption={false}
                   options={data?.data?.map((therapist) => ({
                     value: therapist._id,
-                    label: therapist?.name,
+                    label: therapist?.user?.name,
                   }))}
                 />
               </Form.Item>

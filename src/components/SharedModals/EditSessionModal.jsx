@@ -29,8 +29,6 @@ const EditSessionModal = ({ open, setOpen, session }) => {
   const [slots, setSlots] = useState([]);
   const [searchText, setSearchText] = useState('');
 
-  console.log('session', session);
-
   // get therapist name from api
   const { data } = useGetAllTherapistQuery({ limit: 10, page: 1, searchText });
 
@@ -229,7 +227,7 @@ const EditSessionModal = ({ open, setOpen, session }) => {
 
             <div className="flex-1">
               {/* Availability Section */}
-              <h1 className="py-2 font-medium">Availability</h1>
+              {/* <h1 className="py-2 font-medium">Availability</h1>
               <Form.Item
                 label="Select Date"
                 name="selectedDate"
@@ -240,9 +238,9 @@ const EditSessionModal = ({ open, setOpen, session }) => {
                   size="large"
                   disabledDate={(current) => current && current < moment().startOf('day')}
                 />
-              </Form.Item>
+              </Form.Item> */}
 
-              <div className="flex gap-4">
+              {/* <div className="flex gap-4">
                 <Form.Item
                   label="Start Time"
                   name="startTime"
@@ -269,7 +267,7 @@ const EditSessionModal = ({ open, setOpen, session }) => {
                   onClick={addTimeSlot}
                   style={{ marginTop: '32px' }}
                 />
-              </div>
+              </div> */}
 
               {/* Display Added Slots */}
               <div className="mt-4">

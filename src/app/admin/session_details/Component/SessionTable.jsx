@@ -30,7 +30,7 @@ export default function SessionTable() {
   const [currentPage, setCurrentPage] = useState(1);
 
   // User data with query parameterss
-  const { data, isError, isLoading } = useGetAllsessionQuery({
+  const { data, isLoading } = useGetAllsessionQuery({
     limit: 10,
     page: currentPage,
     searchText,
@@ -84,7 +84,7 @@ export default function SessionTable() {
       const res = await updateStatus({ id, payload }).unwrap();
       if (res.success) {
         toast.success(
-          `${values.name} ${values?.status == 'active' ? 'deactive' : 'active'} successfully!`
+          `${values?.name} ${values?.status == 'active' ? 'deactive' : 'active'} successfully!`
         );
       }
     } catch (error) {
@@ -155,7 +155,7 @@ export default function SessionTable() {
       title: 'Action',
       render: (_, record) => (
         <div className="flex-center-start gap-x-3">
-          <Tooltip title="Edit Details">
+          {/* <Tooltip title="Edit Details">
             <button
               onClick={() => {
                 setEditProductModalModal(true);
@@ -164,7 +164,7 @@ export default function SessionTable() {
             >
               <Edit color="#A57EA5" size={22} />
             </button>
-          </Tooltip>
+          </Tooltip> */}
           <Tooltip title="Show Details">
             <button
               onClick={() => {

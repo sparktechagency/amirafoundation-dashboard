@@ -4,7 +4,7 @@ const therapistApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllTherapist: builder.query({
       query: ({ limit, page, searchText }) => ({
-        url: `/users?limit=${limit}&page=${page}&searchTerm=${searchText}&role=therapist`,
+        url: `/therapists?limit=${limit}&page=${page}&searchTerm=${searchText}`,
         method: 'GET',
       }),
       providesTags: ['therapist', 'user'],

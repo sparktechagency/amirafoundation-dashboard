@@ -1,9 +1,9 @@
-import React from "react";
-import SessionTable from "./Component/SessionTable";
+import React from 'react';
+import SessionTable from './Component/SessionTable';
 
 export const metadata = {
-  title: "Session Table",
-  description: "Session page",
+  title: 'Session Table',
+  description: 'Session page',
 };
 
 const page = () => {
