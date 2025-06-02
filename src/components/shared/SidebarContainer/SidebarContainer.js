@@ -87,11 +87,11 @@ const SidebarContainer = ({ collapsed }) => {
       icon: <PiMoney size={21} strokeWidth={2} />,
       label: <Link href={'/admin/manage-subscription'}>Payments & Subscriptions</Link>,
     },
-    // {
-    //   key: "notification",
-    //   icon: <PiNotification size={21} strokeWidth={2} />,
-    //   label: <Link href={"/admin/notification"}>Notification</Link>,
-    // },
+    {
+      key: 'priceAdjusment',
+      icon: <CircleDollarSign size={21} strokeWidth={2} />,
+      label: <Link href={'/admin/price-adjusment'}>Price Adjusment</Link>,
+    },
     {
       key: 'settings',
       icon: <SlidersVertical size={21} strokeWidth={2} />,

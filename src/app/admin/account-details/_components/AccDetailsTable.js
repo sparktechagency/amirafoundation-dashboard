@@ -3,7 +3,7 @@
 import { Input, Table } from 'antd';
 import { Tooltip } from 'antd';
 import { ConfigProvider } from 'antd';
-import { ChevronLeft, ChevronRight, Search } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Search, Trash } from 'lucide-react';
 import { Eye } from 'lucide-react';
 import { UserX } from 'lucide-react';
 import { useState } from 'react';
@@ -11,7 +11,11 @@ import Image from 'next/image';
 import CustomConfirm from '@/components/CustomConfirm/CustomConfirm';
 import ProfileModal from '@/components/SharedModals/ProfileModal';
 import { Tag } from 'antd';
-import { useBlockUnblockUserMutation, useGetAllusersQuery } from '@/redux/api/userApi';
+import {
+  useBlockUnblockUserMutation,
+  useDeleteUserMutation,
+  useGetAllusersQuery,
+} from '@/redux/api/userApi';
 import moment from 'moment';
 import { toast } from 'sonner';
 
@@ -31,6 +35,10 @@ export default function AccDetailsTable() {
   // status change api handaler----------------
 
   const [updateStatus, { isLoading: updating }] = useBlockUnblockUserMutation();
+
+  // delete api handaler ===================
+
+  const [deleteUser, { isLoading: Deleteting }] = useDeleteUserMutation();
 
   // Table Data transformation
   const tabledata =
@@ -69,6 +77,21 @@ export default function AccDetailsTable() {
     const totalPages = data?.meta?.totalPage || 1;
     const newPage = Math.max(1, Math.min(page, totalPages));
     setCurrentPage(newPage);
+  };
+
+  // ====================delete user ==================
+
+  const handleDelete = async (values) => {
+    const payload = values?._id;
+
+    try {
+      const res = await deleteUser(payload).unwrap();
+      if (res.success) {
+        toast.success('User deleted successfully!');
+      }
+    } catch (error) {
+      toast.error(error?.data?.message);
+    }
   };
 
   // Table Columns (unchanged)
@@ -145,6 +168,18 @@ export default function AccDetailsTable() {
             >
               <button>
                 <UserX color="#F16365" size={22} />
+              </button>
+            </CustomConfirm>
+          </Tooltip>
+          <Tooltip title="Delete User">
+            <CustomConfirm
+              title={'Delete User'}
+              description={`Are you sure to delete this user?`}
+              loading={Deleteting}
+              onConfirm={() => handleDelete(record)}
+            >
+              <button>
+                <Trash color="#F16365" size={22} />
               </button>
             </CustomConfirm>
           </Tooltip>

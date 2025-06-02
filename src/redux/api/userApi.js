@@ -13,7 +13,11 @@ const UserApi = baseApi.injectEndpoints({
       query: (payload) => ({ url: `/users/change-status`, method: 'PATCH', body: payload }),
       invalidatesTags: ['user'],
     }),
+    deleteUser: builder.mutation({
+      query: (id) => ({ url: `/users/${id}`, method: 'DELETE' }),
+      invalidatesTags: ['user'],
+    }),
   }),
 });
 
-export const { useGetAllusersQuery, useBlockUnblockUserMutation } = UserApi;
+export const { useGetAllusersQuery, useBlockUnblockUserMutation, useDeleteUserMutation } = UserApi;

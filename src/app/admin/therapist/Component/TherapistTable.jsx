@@ -3,17 +3,15 @@
 import { Button, Input, Table, Tag } from 'antd';
 import { Tooltip } from 'antd';
 import { ConfigProvider } from 'antd';
-import { ChevronLeft, ChevronRight, PlusCircle, Search } from 'lucide-react';
+import { ChevronLeft, ChevronRight, PlusCircle, Search, Trash } from 'lucide-react';
 import { Eye } from 'lucide-react';
-import { UserX } from 'lucide-react';
 import { useState } from 'react';
 import CustomConfirm from '@/components/CustomConfirm/CustomConfirm';
-import { message } from 'antd';
 import Image from 'next/image';
 import AddTherapistModal from '@/components/SharedModals/AddTherapistModal';
-import { useGetAllTherapistQuery } from '@/redux/api/therapistApi';
+import { useDeleteTherapistMutation, useGetAllTherapistQuery } from '@/redux/api/therapistApi';
 import TherapistProfileModal from '@/components/SharedModals/TherapistProfile';
-import { useBlockUnblockUserMutation } from '@/redux/api/userApi';
+
 import { toast } from 'sonner';
 
 export default function TherapistTable() {
@@ -32,32 +30,28 @@ export default function TherapistTable() {
 
   // status change api handaler----------------
 
-  const [updateStatus, { isLoading: updating }] = useBlockUnblockUserMutation();
+  const [updateStatus, { isLoading: updating }] = useDeleteTherapistMutation();
 
   // Dummy table Data
   const tabledata = data?.data?.map((item, inx) => ({
     key: inx + 1,
-    name: item?.name,
-    userImg: item?.photoUrl,
-    email: item?.email,
-    contact: item?.contactNumber,
+    name: item?.user?.name,
+    userImg: item?.user?.photoUrl,
+    email: item?.user?.email,
+    contact: item?.user?.contactNumber,
     bio: item?.bio,
-    status: item?.status,
+    status: item?.isDeleted === true ? 'blocked' : 'active',
     id: item?._id,
   }));
 
-  // Block user handler
+  // delete user handler
+
   const handleBlockUser = async (values) => {
-    const payload = {
-      userId: values.id,
-      status: values?.status == 'active' ? 'blocked' : 'active',
-    };
+    const payload = values?.id;
     try {
       const res = await updateStatus(payload).unwrap();
       if (res.success) {
-        toast.success(
-          `${values.name} ${values?.status == 'blocked' ? 'unblocked' : 'Blcoked'} successfully!`
-        );
+        toast.success('Therapist deleted successfully!');
       }
     } catch (error) {
       toast.error(error?.data?.message);
@@ -128,13 +122,13 @@ export default function TherapistTable() {
 
           <Tooltip title="Block User">
             <CustomConfirm
-              title={`${record?.status == 'blocked' ? 'Unblock User' : 'Blocked User'}`}
-              description={`Are you sure to ${record?.status == 'blocked' ? 'Unblock' : 'Blocked'} this user?`}
+              title={'Delete Therapist '}
+              description={`Are you sure to delete ${record?.name}?`}
               loading={updating}
               onConfirm={() => handleBlockUser(record)}
             >
               <button>
-                <UserX color="#F16365" size={22} />
+                <Trash color="#F16365" size={22} />
               </button>
             </CustomConfirm>
           </Tooltip>

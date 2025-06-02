@@ -13,7 +13,13 @@ const therapistApi = baseApi.injectEndpoints({
       query: (data) => ({ url: '/therapists', method: 'POST', body: data }),
       invalidatesTags: ['therapist'],
     }),
+    // delete therapist
+    deleteTherapist: builder.mutation({
+      query: (id) => ({ url: `/therapists/${id}`, method: 'DELETE' }),
+      invalidatesTags: ['therapist'],
+    }),
   }),
 });
 
-export const { useGetAllTherapistQuery, useAddNewTherapistMutation } = therapistApi;
+export const { useGetAllTherapistQuery, useAddNewTherapistMutation, useDeleteTherapistMutation } =
+  therapistApi;

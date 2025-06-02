@@ -1,5 +1,5 @@
-import React from "react";
-import TherapistTable from "./Component/TherapistTable";
+import React from 'react';
+import TherapistTable from './Component/TherapistTable';
 
 const page = () => {
   return (
