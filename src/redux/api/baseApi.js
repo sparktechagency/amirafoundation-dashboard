@@ -61,6 +61,7 @@ export const baseApi = createApi({
     'articles',
     'podcasts',
     ' products',
+    'delivery-charge',
   ],
   baseQuery: baseQueryWithRefreshToken,
   endpoints: () => ({}),

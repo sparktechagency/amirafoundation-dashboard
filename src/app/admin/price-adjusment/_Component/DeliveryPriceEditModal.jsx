@@ -1,26 +1,25 @@
 'use client';
 
-import { useCreateDeliveryChargeMutation } from '@/redux/api/deliverychargeApi';
+import { useUpdateDeliveryChargeMutation } from '@/redux/api/deliverychargeApi';
 
 import { Form, Input, Button, Modal, Select, InputNumber } from 'antd';
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { toast } from 'sonner';
 
 const { Option } = Select;
 
-export default function CreateNewPriceModal({ open, setOpen }) {
+export default function DeliveryPriceEditModal({ open, setOpen, data }) {
   const [form] = Form.useForm();
-  const [descriptions, setDescriptions] = useState([]);
 
   // create pakage api handaller
 
-  const [create, { isLoading }] = useCreateDeliveryChargeMutation();
+  const [update, { isLoading }] = useUpdateDeliveryChargeMutation();
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (value) => {
     try {
-      const res = await create(data).unwrap();
+      const res = await update({ id: data?._id, value }).unwrap();
       if (res.success) {
-        toast.success('Create New Delivery Price Successfully');
+        toast.success('Update Delivery Price Successfully');
         setOpen(false);
         form.resetFields();
       }
@@ -28,6 +27,15 @@ export default function CreateNewPriceModal({ open, setOpen }) {
       toast.error(error?.data?.message);
     }
   };
+
+  useEffect(() => {
+    if (data) {
+      form.setFieldsValue({
+        type: data?.type,
+        charge: data?.charge,
+      });
+    }
+  }, [data]);
 
   return (
     <Modal

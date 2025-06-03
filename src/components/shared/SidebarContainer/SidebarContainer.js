@@ -90,7 +90,7 @@ const SidebarContainer = ({ collapsed }) => {
     {
       key: 'priceAdjusment',
       icon: <CircleDollarSign size={21} strokeWidth={2} />,
-      label: <Link href={'/admin/price-adjusment'}>Price Adjusment</Link>,
+      label: <Link href={'/admin/price-adjusment'}>Delivery Charge Adjusment</Link>,
     },
     {
       key: 'settings',
