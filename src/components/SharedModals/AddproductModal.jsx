@@ -1,29 +1,17 @@
-import {
-  Button,
-  Divider,
-  Form,
-  Input,
-  InputNumber,
-  Modal,
-  Select,
-  Upload,
-} from "antd";
-import { UploadOutlined } from "@ant-design/icons";
-import { RiCloseLargeLine } from "react-icons/ri";
-import { useState } from "react";
-import dynamic from "next/dynamic";
-import {
-  useCreateProductMutation,
-  useGetAllproductCategoryQuery,
-} from "@/redux/api/productsApi";
-import { debounce } from "lodash";
-import { toast } from "sonner";
-const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
+import { Button, Divider, Form, Input, InputNumber, Modal, Select, Upload } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
+import { RiCloseLargeLine } from 'react-icons/ri';
+import { useState } from 'react';
+import dynamic from 'next/dynamic';
+import { useCreateProductMutation, useGetAllproductCategoryQuery } from '@/redux/api/productsApi';
+import { debounce } from 'lodash';
+import { toast } from 'sonner';
+const JoditEditor = dynamic(() => import('jodit-react'), { ssr: false });
 
 const AddproductModal = ({ open, setOpen }) => {
   const [form] = Form.useForm();
-  const [aboutMe, setAboutMe] = useState("");
-  const [searchtext, setsearchtext] = useState("");
+  const [aboutMe, setAboutMe] = useState('');
+  const [searchtext, setsearchtext] = useState('');
 
   // Get product category APIs
   const { data, isError } = useGetAllproductCategoryQuery({ searchtext });
@@ -34,31 +22,71 @@ const AddproductModal = ({ open, setOpen }) => {
 
   // Debounced search handler to reduce API calls
   const handleSearch = debounce((value) => {
-    setsearchtext(value); 
-  }, 500); 
+    setsearchtext(value);
+  }, 500);
 
   const handleSubmit = async (values) => {
     try {
       const formData = new FormData();
-      formData.append("data", JSON.stringify(values));
+      formData.append('data', JSON.stringify(values));
 
       // Handle multiple images
       if (values.image && values.image.length > 0) {
         values.image.forEach((fileObj) => {
-          formData.append("images", fileObj.originFileObj); 
+          formData.append('images', fileObj.originFileObj);
         });
       }
 
       const res = await create(formData).unwrap();
       if (res.success) {
-        toast.success("Product Added successfully");
-        form.resetFields(); 
-        setOpen(false); 
+        toast.success('Product Added successfully');
+        form.resetFields();
+        setOpen(false);
       }
     } catch (error) {
-      toast.error(error?.data?.message || "Failed to add product");
+      toast.error(error?.data?.message || 'Failed to add product');
     }
   };
+
+  // List of Nigerian States
+  const states = [
+    'Abia',
+    'Adamawa',
+    'Akwa Ibom',
+    'Anambra',
+    'Bauchi',
+    'Bayelsa',
+    'Benue',
+    'Borno',
+    'Cross River',
+    'Delta',
+    'Ebonyi',
+    'Edo',
+    'Ekiti',
+    'Enugu',
+    'Gombe',
+    'Imo',
+    'Jigawa',
+    'Kaduna',
+    'Kano',
+    'Katsina',
+    'Kebbi',
+    'Kogi',
+    'Kwara',
+    'Lagos',
+    'Nasarawa',
+    'Niger',
+    'Ogun',
+    'Ondo',
+    'Osun',
+    'Oyo',
+    'Plateau',
+    'Rivers',
+    'Sokoto',
+    'Taraba',
+    'Yobe',
+    'Zamfara',
+  ];
 
   return (
     <Modal
@@ -68,19 +96,15 @@ const AddproductModal = ({ open, setOpen }) => {
       onCancel={() => setOpen(false)}
       closeIcon={false}
       style={{
-        minWidth: "1200px",
-        position: "relative",
+        minWidth: '1200px',
+        position: 'relative',
       }}
     >
       <div
         className="absolute right-0 top-0 h-12 w-12 cursor-pointer rounded-bl-3xl"
         onClick={() => setOpen(false)}
       >
-        <RiCloseLargeLine
-          size={18}
-          color="black"
-          className="absolute left-1/3 top-1/3"
-        />
+        <RiCloseLargeLine size={18} color="black" className="absolute left-1/3 top-1/3" />
       </div>
       <h1 className="text-center text-2xl font-semibold">Add Product</h1>
       <Divider />
@@ -90,7 +114,7 @@ const AddproductModal = ({ open, setOpen }) => {
           onFinish={handleSubmit}
           layout="vertical"
           style={{
-            marginTop: "40px",
+            marginTop: '40px',
           }}
         >
           <div className="flex gap-12">
@@ -99,13 +123,8 @@ const AddproductModal = ({ open, setOpen }) => {
               <Form.Item
                 label="Product Name"
                 name="name"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please enter product name",
-                  },
-                ]}
-                style={{ width: "100%" }}
+                rules={[{ required: true, message: 'Please enter product name' }]}
+                style={{ width: '100%' }}
               >
                 <Input size="large" placeholder="Enter Product Name" />
               </Form.Item>
@@ -116,10 +135,8 @@ const AddproductModal = ({ open, setOpen }) => {
                   value={aboutMe}
                   config={{
                     height: 500,
-                    placeholder: "Note: Enter details about you.",
-                    uploader: {
-                      insertImageAsBase64URI: true,
-                    },
+                    placeholder: 'Note: Enter details about you.',
+                    uploader: { insertImageAsBase64URI: true },
                   }}
                   onBlur={(content) => setAboutMe(content)}
                 />
@@ -131,17 +148,12 @@ const AddproductModal = ({ open, setOpen }) => {
               <Form.Item
                 label="Category"
                 name="category"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please select a category",
-                  },
-                ]}
-                style={{ width: "100%" }}
+                rules={[{ required: true, message: 'Please select a category' }]}
+                style={{ width: '100%' }}
               >
                 <Select
                   showSearch
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   placeholder="Search to Select"
                   optionFilterProp="label"
                   onSearch={handleSearch}
@@ -157,18 +169,13 @@ const AddproductModal = ({ open, setOpen }) => {
               <Form.Item
                 label="Stock Quantity"
                 name="quantity"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please enter stock quantity",
-                  },
-                ]}
+                rules={[{ required: true, message: 'Please enter stock quantity' }]}
               >
                 <InputNumber
                   type="number"
                   size="large"
                   placeholder="Enter stock quantity"
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                 />
               </Form.Item>
 
@@ -176,19 +183,36 @@ const AddproductModal = ({ open, setOpen }) => {
               <Form.Item
                 label="Price"
                 name="amount"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please enter price",
-                  },
-                ]}
-                style={{ width: "100%" }}
+                rules={[{ required: true, message: 'Please enter price' }]}
+                style={{ width: '100%' }}
               >
                 <InputNumber
                   type="number"
                   size="large"
                   placeholder="Enter Price"
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
+                />
+              </Form.Item>
+
+              {/* New Store Address Input */}
+              <Form.Item
+                label="Store Address (State)"
+                name="storeAddress"
+                rules={[{ required: true, message: 'Please select a store address (state)' }]}
+              >
+                <Select
+                  showSearch
+                  style={{ width: '100%' }}
+                  placeholder="Search and Select State"
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    option?.children?.toLowerCase().includes(input.toLowerCase()) || !input
+                  }
+                  notFoundContent="No states found"
+                  options={states.map((state) => ({
+                    value: state,
+                    label: state,
+                  }))}
                 />
               </Form.Item>
 
@@ -197,27 +221,23 @@ const AddproductModal = ({ open, setOpen }) => {
               <Form.Item
                 name="image"
                 valuePropName="fileList"
-                getValueFromEvent={(e) =>
-                  Array.isArray(e) ? e : e && e.fileList
-                }
-                rules={[{ required: true, message: "Please upload at least one image" }]}
+                getValueFromEvent={(e) => (Array.isArray(e) ? e : e && e.fileList)}
+                rules={[{ required: true, message: 'Please upload at least one image' }]}
                 style={{
-                  textAlign: "center",
-                  border: "2px dashed #B87CAE",
-                  paddingBlock: "20px",
-                  borderRadius: "10px",
+                  textAlign: 'center',
+                  border: '2px dashed #B87CAE',
+                  paddingBlock: '20px',
+                  borderRadius: '10px',
                 }}
               >
                 <Upload
                   name="images"
                   listType="picture"
                   beforeUpload={() => false}
-                  multiple={true} 
-                  maxCount={5} 
+                  multiple={true}
+                  maxCount={5}
                 >
-                  <Button icon={<UploadOutlined />}>
-                    Upload Product Images
-                  </Button>
+                  <Button icon={<UploadOutlined />}>Upload Product Images</Button>
                 </Upload>
               </Form.Item>
             </div>
@@ -228,8 +248,8 @@ const AddproductModal = ({ open, setOpen }) => {
             loading={isLoading}
             block
             style={{
-              backgroundColor: "#A57EA5",
-              color: "white",
+              backgroundColor: '#A57EA5',
+              color: 'white',
             }}
           >
             Upload

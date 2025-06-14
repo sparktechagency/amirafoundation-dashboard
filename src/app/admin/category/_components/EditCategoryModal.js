@@ -58,15 +58,15 @@ export default function EditCategoryModal({ open, setOpen, data }) {
   // Image upload validation
   const beforeUpload = (file) => {
     const isImage = file.type.startsWith('image/');
-    const isLt2M = file.size / 1024 / 1024 < 2;
+    // const isLt2M = file.size / 1024 / 1024 < 2;
     if (!isImage) {
       toast.error('You can only upload image files!');
       return false;
     }
-    if (!isLt2M) {
-      toast.error('Image must be smaller than 2MB!');
-      return false;
-    }
+    // if (!isLt2M) {
+    //   toast.error('Image must be smaller than 2MB!');
+    //   return false;
+    // }
     return true;
   };
 

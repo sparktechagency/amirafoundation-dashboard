@@ -7,6 +7,7 @@ const productsCategoryAPi = baseApi.injectEndpoints({
         url: `/product-categories?limit=${limit}&page=${page}&searchTerm=${searchText}`,
         method: 'GET',
       }),
+      providesTags: ['productsCategory'],
     }),
 
     // getAllproductCategory: builder.query({
@@ -17,12 +18,15 @@ const productsCategoryAPi = baseApi.injectEndpoints({
     // }),
     CreateProductCategory: builder.mutation({
       query: (data) => ({ url: '/product-categories', method: 'POST', body: data }),
+      invalidatesTags: ['productsCategory'],
     }),
     deleteProductCategory: builder.mutation({
       query: (id) => ({ url: `/product-categories/${id}`, method: 'DELETE' }),
+      invalidatesTags: ['productsCategory'],
     }),
     updateProductcategory: builder.mutation({
       query: ({ id, data }) => ({ url: `/product-categories/${id}`, method: 'PUT', body: data }),
+      invalidatesTags: ['productsCategory'],
     }),
   }),
 });
