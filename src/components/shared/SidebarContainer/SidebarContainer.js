@@ -5,7 +5,7 @@ import logo from '@/assets/images/logo.png';
 import { logout } from '@/redux/features/authSlice';
 import { Menu } from 'antd';
 import Sider from 'antd/es/layout/Sider';
-import { CircleDollarSign, ShoppingCart } from 'lucide-react';
+import { CircleDollarSign, HandPlatter, ShoppingCart } from 'lucide-react';
 import { Shapes } from 'lucide-react';
 import { ScrollText } from 'lucide-react';
 import { LogOut } from 'lucide-react';
@@ -43,6 +43,11 @@ const SidebarContainer = ({ collapsed }) => {
       key: 'account-details',
       icon: <CircleUser size={21} strokeWidth={2} />,
       label: <Link href={'/admin/account-details'}>User Management</Link>,
+    },
+    {
+      key: 'student-details',
+      icon: <HandPlatter size={21} strokeWidth={2} />,
+      label: <Link href={'/admin/studentAccountRequest'}>Student Account Request</Link>,
     },
     {
       key: 'therapist-details',
