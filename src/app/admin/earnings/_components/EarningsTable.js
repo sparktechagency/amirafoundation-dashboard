@@ -29,7 +29,7 @@ export default function EarningsTable() {
   // Dummy table data
   const tabledata = data?.data?.earnings?.map((item, inx) => ({
     key: inx + 1,
-    name: item?.account?.name,
+    name: item?.account?.name || 'Not provided',
     userImg: userImage,
     status: item?.status,
     contact: item?.account?.contactNumber,
@@ -50,7 +50,21 @@ export default function EarningsTable() {
 
   // ================== Table Columns ================
   const columns = [
-    { title: 'User', dataIndex: 'name' },
+    {
+      title: 'User',
+      dataIndex: 'name',
+      render: (value, record) => (
+        <div className="flex items-center gap-2">
+          <p
+            className={clsx('text-sm font-semibold', {
+              'text-gray-500': value === 'Not provided',
+            })}
+          >
+            {value}
+          </p>
+        </div>
+      ),
+    },
     {
       title: 'Subscription Type',
       dataIndex: 'subsciptiontype',
