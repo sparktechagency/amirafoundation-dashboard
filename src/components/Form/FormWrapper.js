@@ -1,19 +1,14 @@
-"use client";
+'use client';
 
-import { Form } from "antd";
-import { useEffect } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { Form } from 'antd';
+import { useEffect } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 
-export default function FormWrapper({
-  onSubmit,
-  children,
-  defaultValues,
-  resolver,
-}) {
+export default function FormWrapper({ onSubmit, children, defaultValues, resolver }) {
   const formConfig = {};
 
   if (resolver) {
-    formConfig["resolver"] = resolver;
+    formConfig['resolver'] = resolver;
   }
 
   // set default value-------------------------

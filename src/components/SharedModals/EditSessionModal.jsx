@@ -7,9 +7,6 @@ import {
   Modal,
   Select,
   Upload,
-  DatePicker,
-  TimePicker,
-  Space,
   Button as AntButton,
   message,
 } from 'antd';
@@ -17,7 +14,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import { RiCloseLargeLine } from 'react-icons/ri';
 import TextArea from 'antd/es/input/TextArea';
 import { useState } from 'react';
-import moment from 'moment';
+
 import { DeleteOutlined } from '@ant-design/icons';
 import { useGetAllTherapistQuery } from '@/redux/api/therapistApi';
 import { debounce } from 'lodash';
