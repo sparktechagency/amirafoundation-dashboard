@@ -24,10 +24,10 @@ export default function ProductsTable() {
   const [selectedproduct, SetSelectedProduct] = useState('');
   const [details, setDetails] = useState('');
 
-  const [deleteProduct, { isLoading: Deleteting }] = useDeleteProductMutation();
+  const [deleteProduct] = useDeleteProductMutation();
 
   // User data with query parameterss
-  const { data, isError, isLoading } = useGetAllproductQuery({
+  const { data, isLoading } = useGetAllproductQuery({
     limit: 10,
     page: currentPage,
     searchText,

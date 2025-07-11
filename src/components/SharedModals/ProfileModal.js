@@ -61,7 +61,7 @@ export default function ProfileModal({ open, setOpen, user }) {
           </p>
         </div>
         {user?.documents && (
-          <div div className=" flex flex-col items-start text-black gap-5">
+          <div className=" flex flex-col items-start text-black gap-5">
             <h1 className="font-bold">Documents :</h1>
             <div className="text-black">
               <Image

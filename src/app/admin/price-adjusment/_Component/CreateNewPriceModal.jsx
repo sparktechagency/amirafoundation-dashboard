@@ -6,11 +6,8 @@ import { Form, Input, Button, Modal, Select, InputNumber } from 'antd';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-const { Option } = Select;
-
 export default function CreateNewPriceModal({ open, setOpen }) {
   const [form] = Form.useForm();
-  const [descriptions, setDescriptions] = useState([]);
 
   // create pakage api handaller
 

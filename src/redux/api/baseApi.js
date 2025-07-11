@@ -3,7 +3,7 @@ import { logout, setUser } from '../features/authSlice';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
-  // credentials: 'include',
+  credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
     const token = getState()?.auth?.token;
     if (token) {

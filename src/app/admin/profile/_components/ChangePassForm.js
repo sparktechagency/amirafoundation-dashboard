@@ -3,7 +3,7 @@
 import FormWrapper from '@/components/Form/FormWrapper';
 import UInput from '@/components/Form/UInput';
 import { useChangepasswordMutation } from '@/redux/api/authApi';
-import { changePasswordSchema, editProfileSchema } from '@/schema/profileSchema';
+import { changePasswordSchema } from '@/schema/profileSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from 'antd';
 import { toast } from 'sonner';

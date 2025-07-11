@@ -53,7 +53,7 @@ export default function EarningsTable() {
     {
       title: 'User',
       dataIndex: 'name',
-      render: (value, record) => (
+      render: (value) => (
         <div className="flex items-center gap-2">
           <p
             className={clsx('text-sm font-semibold', {

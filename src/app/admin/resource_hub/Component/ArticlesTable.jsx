@@ -6,7 +6,6 @@ import { ConfigProvider } from 'antd';
 import { ChevronLeft, ChevronRight, Edit, PlusCircle, Search } from 'lucide-react';
 import { useState } from 'react';
 import CustomConfirm from '@/components/CustomConfirm/CustomConfirm';
-import { message } from 'antd';
 import { Tag } from 'antd';
 import { Delete } from 'lucide-react';
 import AddArticleModal from '@/components/SharedModals/AddArticleModal';

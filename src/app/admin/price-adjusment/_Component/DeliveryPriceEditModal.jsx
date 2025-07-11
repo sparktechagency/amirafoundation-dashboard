@@ -6,8 +6,6 @@ import { Form, Input, Button, Modal, Select, InputNumber } from 'antd';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
 
-const { Option } = Select;
-
 export default function DeliveryPriceEditModal({ open, setOpen, data }) {
   const [form] = Form.useForm();
 
@@ -35,7 +33,7 @@ export default function DeliveryPriceEditModal({ open, setOpen, data }) {
         charge: data?.charge,
       });
     }
-  }, [data]);
+  }, [data, form]);
 
   return (
     <Modal

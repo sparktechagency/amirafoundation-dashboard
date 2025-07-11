@@ -11,7 +11,7 @@ import { useState, useRef } from 'react';
 const { TabPane } = Tabs;
 
 export default function ProfileContainer() {
-  const { data, isError, isLoading, isSuccess } = useGetMyProfileQuery();
+  const { data } = useGetMyProfileQuery();
   const user = data?.data;
 
   // State to store the uploaded image
