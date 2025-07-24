@@ -1,5 +1,5 @@
 import { io } from 'socket.io-client';
 
-const URL = 'http://172.252.13.74:4001/';
+const URL = process.env.NEXT_PUBLIC_SOCKET_URL;
 
 export const socket = io(URL);

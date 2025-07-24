@@ -49,7 +49,7 @@ export default function HeaderContainer({ collapsed, setCollapsed }) {
     }
   }, [notification]);
 
-  //socket
+  //socket==================================
   useEffect(() => {
     socket.auth = { token };
     socket.connect();
@@ -111,7 +111,7 @@ export default function HeaderContainer({ collapsed, setCollapsed }) {
           {/* Notification dot indicator */}
           <div />
           <Badge count={notificationData?.data?.length || 0} overflowCount={10}></Badge>
-          <Bell fill="#1C1B1F" stroke="#1C1B1F" size={22} />
+          <Bell fill="#1C1B1F" stroke="#1C1B1F" size={18} />
         </Link>
 
         {/* User */}
