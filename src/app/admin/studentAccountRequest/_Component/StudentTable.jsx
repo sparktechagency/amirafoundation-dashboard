@@ -10,7 +10,7 @@ import Image from 'next/image';
 import CustomConfirm from '@/components/CustomConfirm/CustomConfirm';
 import ProfileModal from '@/components/SharedModals/ProfileModal';
 import { Tag } from 'antd';
-import { useBlockUnblockUserMutation, useDeleteUserMutation } from '@/redux/api/userApi';
+import { useDeleteUserMutation } from '@/redux/api/userApi';
 import moment from 'moment';
 import { toast } from 'sonner';
 import {
@@ -106,8 +106,8 @@ export default function StudentTable() {
           return url.startsWith('http://') || url.startsWith('https://') || url.startsWith('/');
         };
 
-        // Get the first letter of the name (uppercase)
-        const firstLetter = value ? value.charAt(0).toUpperCase() : '';
+        // Get the first letter of the name (uppercase), or fallback to empty string
+        const firstLetter = value && typeof value === 'string' ? value.charAt(0).toUpperCase() : '';
 
         // Determine if the image is valid
         const hasValidImage = isValidUrl(record?.userImg);
@@ -124,10 +124,10 @@ export default function StudentTable() {
               />
             ) : (
               <div className="flex items-center justify-center rounded-full w-10 h-10 bg-[#A57EA5] text-white text-lg font-medium">
-                {firstLetter}
+                {firstLetter || '?'}
               </div>
             )}
-            <p className="font-medium">{value}</p>
+            <p className="font-medium">{value || 'Unknown'}</p>
           </div>
         );
       },

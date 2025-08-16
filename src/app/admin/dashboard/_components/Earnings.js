@@ -83,7 +83,7 @@ const EarningSummary = ({ earnigData, onYearChange }) => {
           />
 
           <Bar
-            barSize={18}
+            barSize={48}
             radius={5}
             background={false}
             dataKey="user"

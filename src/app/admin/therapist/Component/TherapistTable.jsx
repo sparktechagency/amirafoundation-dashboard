@@ -22,7 +22,7 @@ export default function TherapistTable() {
   const [selectedUser, SetSelecteduser] = useState('');
 
   // User data with query parameterss
-  const { data, isError, isLoading } = useGetAllTherapistQuery({
+  const { data, isLoading } = useGetAllTherapistQuery({
     limit: 10,
     page: currentPage,
     searchText,
@@ -65,6 +65,10 @@ export default function TherapistTable() {
     const newPage = Math.max(1, Math.min(page, totalPages));
     setCurrentPage(newPage);
   };
+  const isValidUrl = (url) => {
+    if (!url) return false;
+    return url.startsWith('http://') || url.startsWith('https://') || url.startsWith('/');
+  };
 
   // ================== Table Columns ================
   const columns = [
@@ -76,16 +80,17 @@ export default function TherapistTable() {
       render: (_, record) => {
         // Get the first letter of the name (uppercase)
         const firstLetter = record?.name ? record?.name.charAt(0).toUpperCase() : '';
-
+        // Determine the image source
+        const imageSrc = isValidUrl(record?.userImg);
         return (
           <div className="flex items-center gap-x-3">
-            {record?.userImg ? (
+            {imageSrc ? (
               <Image
-                src={record?.userImg}
+                src={imageSrc}
                 alt="user image"
                 height={2400}
                 width={2400}
-                className="w-10 h-auto rounded-full aspect-square"
+                className="w-10  border h-10 rounded-full aspect-square"
               />
             ) : (
               <div className="flex items-center justify-center rounded-full w-10 h-10 bg-[#A57EA5] text-white text-lg font-medium">

@@ -2,8 +2,8 @@
 const nextConfig = {
   redirects: async () => [
     {
-      source: "/",
-      destination: "/admin/dashboard",
+      source: '/',
+      destination: '/admin/dashboard',
       permanent: false,
     },
   ],
@@ -11,7 +11,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**', 
+        hostname: '**',
       },
     ],
   },

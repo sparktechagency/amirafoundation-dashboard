@@ -2,10 +2,22 @@
 
 import { Modal } from 'antd';
 import Image from 'next/image';
-import { Tag } from 'antd';
+import { useEffect } from 'react';
 
 export default function TherapistProfileModal({ open, setOpen, user }) {
-  console.log('ssssssssssss', user);
+  useEffect(() => {
+    if (user) return;
+  }, [user]);
+
+  // Helper function to validate URL
+  const isValidUrl = (url) => {
+    if (!url) return false;
+    return url.startsWith('http://') || url.startsWith('https://') || url.startsWith('/');
+  };
+
+  // Determine the image source
+  const imageSrc = isValidUrl(user?.userImg);
+
   return (
     <Modal
       centered
@@ -17,13 +29,19 @@ export default function TherapistProfileModal({ open, setOpen, user }) {
       }}
     >
       <div className="flex flex-col items-center gap-4 rounded-lg bg-primary-pink py-4">
-        <Image
-          src={user?.userImg}
-          alt="user image"
-          height={2400}
-          width={2400}
-          className="w-[30%] h-auto rounded-full aspect-square"
-        />
+        {imageSrc ? (
+          <Image
+            src={user?.userImg}
+            alt="user image"
+            height={2400}
+            width={2400}
+            className="w-[30%] h-auto rounded-full aspect-square"
+          />
+        ) : (
+          <div className="flex items-center justify-center rounded-full w-10 h-10 bg-[#A57EA5] text-white text-lg font-medium">
+            {user?.name?.charAt(0).toUpperCase()}
+          </div>
+        )}
 
         <h4 className="text-3xl font-bold text-white">{user?.name}</h4>
       </div>

@@ -10,9 +10,7 @@ import { toast } from 'sonner';
 
 export default function ForgotPassForm() {
   const router = useRouter();
-
   const [forgetPassword, { isLoading }] = useForgetPasswordMutation();
-
   const onSubmit = async (data) => {
     try {
       const res = await forgetPassword(data).unwrap();
