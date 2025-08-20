@@ -76,11 +76,18 @@ export default function ProductsTable() {
       title: 'Product',
       dataIndex: 'product',
       render: (value, record) => {
+        const isValidUrl = (url) => {
+          if (!url) return false;
+          return url.startsWith('http://') || url.startsWith('https://') || url.startsWith('/');
+        };
+        // Determine if the image is valid
+        const hasValidImage = isValidUrl(record?.userImg);
+
         const firstLetter = value ? value.charAt(0).toUpperCase() : '';
 
         return (
           <div className="flex-center-start gap-x-2">
-            {record?.userImg ? (
+            {hasValidImage ? (
               <Image
                 src={record.userImg}
                 alt="User avatar"

@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { useGetArticleCategoryQuery } from '@/redux/api/contentCategoryApi';
 import { debounce } from 'lodash';
 import CreateCategoryModal from '@/app/admin/category/_components/CreateCategoryModal';
+import imageCompression from 'browser-image-compression'; // ✅ added
 
 const JoditEditor = dynamic(() => import('jodit-react'), { ssr: false });
 
@@ -17,34 +18,43 @@ const AddArticleModal = ({ open, setOpen }) => {
   const [searchText, setSearchText] = useState('');
   const [categoryopen, setCategoryOpen] = useState(false);
 
-  // create article api handaler
-
   const [create, { isLoading }] = useCreateArticleMutation();
-
-  // get article category api handaler
 
   const { data } = useGetArticleCategoryQuery({ searchText });
 
-  // Debounced search handler to reduce API calls
+  // Debounced search handler
   const handleSearch = debounce((value) => {
-    setSearchText(value); // Update search text when the user types
-  }, 500); // Wait for 500ms after the user stops typing before calling API
+    setSearchText(value);
+  }, 500);
 
   const handleSubmit = async (values) => {
     try {
       const formData = new FormData();
       formData.append('data', JSON.stringify(values));
-      // Handle file upload - get the first file from fileList
+
+      // ✅ Compress & append image before upload
       if (values.image && values.image.length > 0) {
         const file = values.image[0].originFileObj;
-        formData.append('image', file);
+
+        // Compression options
+        const options = {
+          maxSizeMB: 1, // target max size
+          maxWidthOrHeight: 1200, // resize max dimension
+          useWebWorker: true,
+        };
+
+        const compressedFile = await imageCompression(file, options);
+        formData.append('image', compressedFile);
       }
+
       const res = await create(formData).unwrap();
       if (res.success) {
-        toast.success('Article Added succesfully');
+        toast.success('Article Added successfully');
+        form.resetFields();
+        setOpen(false);
       }
     } catch (error) {
-      toast.error(error?.data?.message);
+      toast.error(error?.data?.message || 'Failed to add article');
     }
   };
 
@@ -92,7 +102,7 @@ const AddArticleModal = ({ open, setOpen }) => {
                 ]}
                 style={{ width: '100%' }}
               >
-                <Input size="large" placeholder="Enter Article title"></Input>
+                <Input size="large" placeholder="Enter Article title" />
               </Form.Item>
 
               {/* ========================= Category ===================== */}
@@ -114,27 +124,32 @@ const AddArticleModal = ({ open, setOpen }) => {
                   optionFilterProp="label"
                   onSearch={handleSearch}
                   filterOption={false}
-                  options={data?.data?.map((therapist) => ({
-                    value: therapist._id,
-                    label: therapist.title,
+                  options={data?.data?.map((cat) => ({
+                    value: cat._id,
+                    label: cat.title,
                   }))}
                 />
               </Form.Item>
               <div className="flex justify-end">
                 <Button onClick={() => setCategoryOpen(true)}>Add New Category</Button>
               </div>
-              {/*  =========================Input: About author======================== */}
 
-              <Form.Item label="Author" name="author" rules={[{ type: 'text', required: true }]}>
-                <Input size="large" placeholder="Enter Author"></Input>
+              {/* ========================= Author ======================== */}
+              <Form.Item
+                label="Author"
+                name="author"
+                rules={[{ type: 'text', required: true, message: 'Please enter author name' }]}
+              >
+                <Input size="large" placeholder="Enter Author" />
               </Form.Item>
-              {/* ===============================Input: Featured Image Upload================================ */}
+
+              {/* ================= Feature Image Upload ================= */}
               <h1 className="py-2 font-medium">Feature Image Upload</h1>
               <Form.Item
                 name="image"
                 valuePropName="fileList"
                 getValueFromEvent={(e) => (Array.isArray(e) ? e : e && e.fileList)}
-                rules={[{ required: true }]}
+                rules={[{ required: true, message: 'Please upload a feature image' }]}
                 style={{
                   textAlign: 'center',
                   border: '2px dashed #B87CAE',
@@ -142,19 +157,20 @@ const AddArticleModal = ({ open, setOpen }) => {
                   borderRadius: '10px',
                 }}
               >
-                <Upload name="image" listType="picture" beforeUpload={() => false}>
+                <Upload name="image" listType="picture" beforeUpload={() => false} maxCount={1}>
                   <Button icon={<UploadOutlined />}>Upload</Button>
                 </Upload>
               </Form.Item>
             </div>
+
+            {/* ======================= Content ======================= */}
             <div className="flex-1">
-              {/* About Me */}
               <Form.Item label="Content :" name="description">
                 <JoditEditor
                   value={aboutMe}
                   config={{
                     height: 500,
-                    placeholder: 'Note: Enter details about you.',
+                    placeholder: 'Write your article content...',
                     uploader: {
                       insertImageAsBase64URI: true,
                     },
@@ -164,6 +180,7 @@ const AddArticleModal = ({ open, setOpen }) => {
               </Form.Item>
             </div>
           </div>
+
           <Button
             htmlType="submit"
             size="large"

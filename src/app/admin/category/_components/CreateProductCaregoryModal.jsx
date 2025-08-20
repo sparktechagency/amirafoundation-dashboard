@@ -2,26 +2,45 @@ import { useCreateProductCategoryMutation } from '@/redux/api/productCategoryApi
 import { Button, Form, Input, Modal, Upload } from 'antd';
 import { Plus } from 'lucide-react';
 import { toast } from 'sonner';
+import imageCompression from 'browser-image-compression';
 
 export default function CreateProductCaregoryModal({ open, setOpen }) {
   const [create, { isLoading }] = useCreateProductCategoryMutation();
 
-  // edit
+  // Compress image before upload
+  const handleImageCompress = async (file) => {
+    const options = {
+      maxSizeMB: 1, // Target max 1MB
+      maxWidthOrHeight: 1200, // Resize large dimensions
+      useWebWorker: true,
+    };
+    try {
+      const compressedFile = await imageCompression(file, options);
+      return compressedFile;
+    } catch (error) {
+      console.error('Image compression error:', error);
+      return file; // fallback if compression fails
+    }
+  };
 
   const handleSubmit = async (values) => {
     try {
       const formData = new FormData();
       formData.append('data', JSON.stringify(values));
+
       if (values.image && values.image.length > 0) {
         const file = values.image[0].originFileObj;
-        formData.append('image', file);
+        const compressedFile = await handleImageCompress(file);
+        formData.append('image', compressedFile);
       }
+
       const res = await create(formData).unwrap();
       if (res.success) {
-        toast.success(' Category Create succesfully');
+        toast.success('Category created successfully');
+        setOpen(false);
       }
     } catch (error) {
-      toast.error(error?.data?.message);
+      toast.error(error?.data?.message || 'Something went wrong');
     }
   };
 
@@ -29,32 +48,17 @@ export default function CreateProductCaregoryModal({ open, setOpen }) {
     <Modal
       centered
       open={open}
-      setOpen={setOpen}
       footer={null}
-      onCancel={() => {
-        setOpen(false);
-      }}
-      title="Edit Category"
+      onCancel={() => setOpen(false)}
+      title="Create Category"
     >
-      <Form
-        layout="vertical"
-        style={{
-          marginTop: '40px',
-        }}
-        onFinish={handleSubmit}
-      >
+      <Form layout="vertical" style={{ marginTop: '40px' }} onFinish={handleSubmit}>
         <Form.Item
           label="Category Title"
           name="title"
-          rules={[
-            {
-              required: true,
-              message: 'Please enter category name',
-            },
-          ]}
-          style={{ width: '100%' }}
+          rules={[{ required: true, message: 'Please enter category name' }]}
         >
-          <Input size="large" placeholder=" Enter category name"></Input>
+          <Input size="large" placeholder="Enter category name" />
         </Form.Item>
 
         <div className="mb-6 flex-center-between">
@@ -66,15 +70,11 @@ export default function CreateProductCaregoryModal({ open, setOpen }) {
             name="image"
             valuePropName="fileList"
             getValueFromEvent={(e) => (Array.isArray(e) ? e : e && e.fileList)}
-            rules={[{ required: true }]}
-            style={{
-              textAlign: 'center',
-              padding: '20px',
-              borderRadius: '10px',
-            }}
+            rules={[{ required: true, message: 'Please upload an image' }]}
+            style={{ textAlign: 'center', padding: '20px', borderRadius: '10px' }}
           >
             <Upload name="image" listType="picture" beforeUpload={() => false}>
-              <Button type="primary" htmlType="button" icon={<Plus size={20} />}>
+              <Button type="primary" icon={<Plus size={20} />}>
                 Add media
               </Button>
             </Upload>

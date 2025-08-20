@@ -9,20 +9,19 @@ import {
   Upload,
   DatePicker,
   TimePicker,
-  Space,
   Button as AntButton,
   message,
 } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { UploadOutlined, DeleteOutlined } from '@ant-design/icons';
 import { RiCloseLargeLine } from 'react-icons/ri';
 import TextArea from 'antd/es/input/TextArea';
 import { useState } from 'react';
 import moment from 'moment';
-import { DeleteOutlined } from '@ant-design/icons';
 import { useGetAllTherapistQuery } from '@/redux/api/therapistApi';
 import { debounce } from 'lodash';
 import { useAddNewSessionMutation } from '@/redux/api/sessionApi';
 import { toast } from 'sonner';
+import imageCompression from 'browser-image-compression';
 
 const AddSessionModal = ({ open, setOpen }) => {
   const [form] = Form.useForm();
@@ -39,12 +38,33 @@ const AddSessionModal = ({ open, setOpen }) => {
     const formValues = { ...values, slots: slots };
     const formData = new FormData();
     formData.append('data', JSON.stringify(formValues));
+
     const fileList = form.getFieldValue('image');
+
     if (fileList && fileList.length > 0) {
-      fileList.forEach((file) => {
-        formData.append('image', file.originFileObj);
-      });
+      for (const file of fileList) {
+        const originalFile = file.originFileObj;
+
+        // ✅ compress before append
+        const options = {
+          maxSizeMB: 1, // 1MB max
+          maxWidthOrHeight: 1024, // resize if too large
+          useWebWorker: true,
+        };
+
+        try {
+          const compressedFile = await imageCompression(originalFile, options);
+          console.log(
+            `Compressed from ${(originalFile.size / 1024 / 1024).toFixed(2)} MB → ${(compressedFile.size / 1024 / 1024).toFixed(2)} MB`
+          );
+          formData.append('image', compressedFile, compressedFile.name);
+        } catch (err) {
+          console.error('Image compression failed:', err);
+          formData.append('image', originalFile); // fallback
+        }
+      }
     }
+
     try {
       const res = await addSession(formData).unwrap();
       if (res.success) {
@@ -55,8 +75,6 @@ const AddSessionModal = ({ open, setOpen }) => {
     } catch (error) {
       toast.error(error?.data?.message || 'Something went wrong');
     }
-
-    console.log(values);
   };
 
   // Add a time slot for a selected date
@@ -76,7 +94,6 @@ const AddSessionModal = ({ open, setOpen }) => {
     };
 
     setSlots([...slots, newSlot]);
-    // Reset time fields after adding a slot
     form.setFieldsValue({ startTime: null, endTime: null });
   };
 
@@ -111,18 +128,16 @@ const AddSessionModal = ({ open, setOpen }) => {
       <div>
         <Form form={form} onFinish={handleSubmit} layout="vertical" style={{ marginTop: '40px' }}>
           <div className="flex gap-12">
+            {/* Left side */}
             <div className="flex-1">
-              {/* Session Title */}
               <Form.Item
                 label="Session Title"
                 name="title"
                 rules={[{ required: true, message: 'Please enter Session Title' }]}
-                style={{ width: '100%' }}
               >
                 <Input size="large" placeholder="Enter Session Title" />
               </Form.Item>
 
-              {/* About Therapy Session */}
               <Form.Item
                 label="About Therapy session"
                 name="description"
@@ -131,7 +146,6 @@ const AddSessionModal = ({ open, setOpen }) => {
                 <TextArea rows={4} placeholder="Write Description" />
               </Form.Item>
 
-              {/* Location */}
               <Form.Item
                 label="Location"
                 name="location"
@@ -139,7 +153,7 @@ const AddSessionModal = ({ open, setOpen }) => {
               >
                 <Input size="large" placeholder="Enter Location" />
               </Form.Item>
-              {/*================= Location link ============ */}
+
               <Form.Item
                 label="Location link"
                 name="locationLink"
@@ -154,7 +168,6 @@ const AddSessionModal = ({ open, setOpen }) => {
                 <Input size="large" placeholder="Enter Location link" />
               </Form.Item>
 
-              {/* Per Session Fee */}
               <Form.Item
                 label="Per Session Fee"
                 name="fee"
@@ -163,7 +176,6 @@ const AddSessionModal = ({ open, setOpen }) => {
                 <Input type="number" size="large" placeholder="Enter session fee" />
               </Form.Item>
 
-              {/* Therapy Type */}
               <Form.Item
                 label="Therapy Type"
                 name="therapyType"
@@ -178,7 +190,7 @@ const AddSessionModal = ({ open, setOpen }) => {
                   ]}
                 />
               </Form.Item>
-              {/* ==============  Therapist Name ============== */}
+
               <Form.Item
                 label="Therapist Name"
                 name="therapist"
@@ -186,7 +198,6 @@ const AddSessionModal = ({ open, setOpen }) => {
               >
                 <Select
                   showSearch
-                  style={{ width: '100%' }}
                   placeholder="Search to Select"
                   optionFilterProp="label"
                   onSearch={handleSearch}
@@ -199,8 +210,8 @@ const AddSessionModal = ({ open, setOpen }) => {
               </Form.Item>
             </div>
 
+            {/* Middle side */}
             <div className="flex-1">
-              {/* Upload Thumbnail Field */}
               <h1 className="py-2 font-medium">Upload Thumbnail Field</h1>
               <Form.Item
                 name="image"
@@ -220,8 +231,8 @@ const AddSessionModal = ({ open, setOpen }) => {
               </Form.Item>
             </div>
 
+            {/* Right side */}
             <div className="flex-1">
-              {/* Availability Section */}
               <h1 className="py-2 font-medium">Availability</h1>
               <Form.Item
                 label="Select Date"
@@ -236,21 +247,11 @@ const AddSessionModal = ({ open, setOpen }) => {
               </Form.Item>
 
               <div className="flex gap-4">
-                <Form.Item
-                  label="Start Time"
-                  name="startTime"
-                  // rules={[{ required: true, message: "Please select start time" }]}
-                  style={{ flex: 1 }}
-                >
+                <Form.Item label="Start Time" name="startTime" style={{ flex: 1 }}>
                   <TimePicker style={{ width: '100%' }} size="large" format="h:mm A" use12Hours />
                 </Form.Item>
 
-                <Form.Item
-                  label="End Time"
-                  name="endTime"
-                  // rules={[{ required: true, message: "Please select end time" }]}
-                  style={{ flex: 1 }}
-                >
+                <Form.Item label="End Time" name="endTime" style={{ flex: 1 }}>
                   <TimePicker style={{ width: '100%' }} size="large" format="h:mm A" use12Hours />
                 </Form.Item>
 
@@ -264,7 +265,6 @@ const AddSessionModal = ({ open, setOpen }) => {
                 />
               </div>
 
-              {/* Display Added Slots */}
               <div className="mt-4">
                 {slots.map((slot, index) => (
                   <div

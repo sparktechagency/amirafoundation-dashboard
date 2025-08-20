@@ -6,6 +6,8 @@ import dynamic from 'next/dynamic';
 import { useCreateProductMutation, useGetAllproductCategoryQuery } from '@/redux/api/productsApi';
 import { debounce } from 'lodash';
 import { toast } from 'sonner';
+import imageCompression from 'browser-image-compression'; // ✅ Add this
+
 const JoditEditor = dynamic(() => import('jodit-react'), { ssr: false });
 
 const AddproductModal = ({ open, setOpen }) => {
@@ -14,7 +16,7 @@ const AddproductModal = ({ open, setOpen }) => {
   const [searchtext, setsearchtext] = useState('');
 
   // Get product category APIs
-  const { data, isError } = useGetAllproductCategoryQuery({ searchtext });
+  const { data } = useGetAllproductCategoryQuery({ searchtext });
   const category = data?.data;
 
   // Add new product API handler
@@ -25,16 +27,33 @@ const AddproductModal = ({ open, setOpen }) => {
     setsearchtext(value);
   }, 500);
 
+  // ✅ Function to compress images before sending
+  const compressImage = async (file) => {
+    const options = {
+      maxSizeMB: 1, // max 1MB
+      maxWidthOrHeight: 1200, // resize if larger than 1200px
+      useWebWorker: true,
+    };
+    try {
+      const compressedFile = await imageCompression(file, options);
+      return new File([compressedFile], file.name, { type: file.type });
+    } catch (error) {
+      console.error('Image compression failed:', error);
+      return file; // fallback to original
+    }
+  };
+
   const handleSubmit = async (values) => {
     try {
       const formData = new FormData();
       formData.append('data', JSON.stringify(values));
 
-      // Handle multiple images
+      // ✅ Compress and append multiple images
       if (values.image && values.image.length > 0) {
-        values.image.forEach((fileObj) => {
-          formData.append('images', fileObj.originFileObj);
-        });
+        for (const fileObj of values.image) {
+          const compressed = await compressImage(fileObj.originFileObj);
+          formData.append('images', compressed);
+        }
       }
 
       const res = await create(formData).unwrap();
@@ -95,10 +114,7 @@ const AddproductModal = ({ open, setOpen }) => {
       centered={true}
       onCancel={() => setOpen(false)}
       closeIcon={false}
-      style={{
-        minWidth: '1200px',
-        position: 'relative',
-      }}
+      style={{ minWidth: '1200px', position: 'relative' }}
     >
       <div
         className="absolute right-0 top-0 h-12 w-12 cursor-pointer rounded-bl-3xl"
@@ -109,14 +125,7 @@ const AddproductModal = ({ open, setOpen }) => {
       <h1 className="text-center text-2xl font-semibold">Add Product</h1>
       <Divider />
       <div>
-        <Form
-          form={form}
-          onFinish={handleSubmit}
-          layout="vertical"
-          style={{
-            marginTop: '40px',
-          }}
-        >
+        <Form form={form} onFinish={handleSubmit} layout="vertical" style={{ marginTop: '40px' }}>
           <div className="flex gap-12">
             <div className="flex-1">
               {/* Input: Product Name */}
@@ -247,10 +256,7 @@ const AddproductModal = ({ open, setOpen }) => {
             size="large"
             loading={isLoading}
             block
-            style={{
-              backgroundColor: '#A57EA5',
-              color: 'white',
-            }}
+            style={{ backgroundColor: '#A57EA5', color: 'white' }}
           >
             Upload
           </Button>
